@@ -1,0 +1,832 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pawel Job Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500&display=swap">
+<style>
+:root {
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-head: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --bg: #ffffff;
+  --nav-bg: #f6f7f9;
+  --border: #e5e7eb;
+  --border-light: #f1f2f4;
+  --text: #111827;
+  --muted: #6b7280;
+  --faint: #9ca3af;
+  --accent: #16354f;
+  --accent-hover: #0e2338;
+  --accent-soft: #eaf0f5;
+  --accent-icon: #16354f;
+  --link: #16354f;
+  --row-hover: #f9fafb;
+  --tab-bg: #f3f4f6;
+  --info-soft: #eff6ff; --info-border: #bfdbfe; --info-icon: #2563eb; --info-text: #1e3a8a;
+  --ok-soft: #f0fdf4; --ok-border: #bbf7d0; --ok: #16a34a; --ok-text: #166534;
+  --warn-soft: #fffbeb; --warn-border: #f5d78e; --warn: #b45309; --warn-text: #92400e;
+  --bad-soft: #fef2f2; --bad-border: #fecaca; --bad: #dc2626;
+  --ai-soft: #f5f3ff; --ai-border: #ddd6fe; --ai: #6d28d9;
+  --shadow: 0 1px 2px rgba(16,24,40,.04);
+  --on-accent: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #000000; --nav-bg: #111113; --border: #27272a; --border-light: #1c1c1f;
+    --text: #f5f5f5; --muted: #a1a1aa; --faint: #71717a;
+    --accent: #2b5a80; --accent-hover: #36699a; --accent-soft: #1a2c3a; --accent-icon: #8fb8d9; --link: #8fb8d9;
+    --row-hover: #18181b; --tab-bg: #1c1c1f;
+    --info-soft: #16233a; --info-border: #1e3a5f; --info-icon: #60a5fa; --info-text: #bfdbfe;
+    --ok-soft: #0f2a1c; --ok-border: #1e4a30; --ok: #4ade80; --ok-text: #bbf7d0;
+    --warn-soft: #2e2410; --warn-border: #4a3a10; --warn: #f0b859; --warn-text: #fde68a;
+    --bad-soft: #2c1212; --bad-border: #4c1d1d; --bad: #f87171;
+    --ai-soft: #1f1836; --ai-border: #3b2d66; --ai: #c4b5fd;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #000000; --nav-bg: #111113; --border: #27272a; --border-light: #1c1c1f;
+  --text: #f5f5f5; --muted: #a1a1aa; --faint: #71717a;
+  --accent: #2b5a80; --accent-hover: #36699a; --accent-soft: #1a2c3a; --accent-icon: #8fb8d9; --link: #8fb8d9;
+  --row-hover: #18181b; --tab-bg: #1c1c1f;
+  --info-soft: #16233a; --info-border: #1e3a5f; --info-icon: #60a5fa; --info-text: #bfdbfe;
+  --ok-soft: #0f2a1c; --ok-border: #1e4a30; --ok: #4ade80; --ok-text: #bbf7d0;
+  --warn-soft: #2e2410; --warn-border: #4a3a10; --warn: #f0b859; --warn-text: #fde68a;
+  --bad-soft: #2c1212; --bad-border: #4c1d1d; --bad: #f87171;
+  --ai-soft: #1f1836; --ai-border: #3b2d66; --ai: #c4b5fd;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 14px; line-height: 1.45; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--info-icon); outline-offset: 2px; }
+svg.lucide { width: 16px; height: 16px; flex-shrink: 0; }
+
+.app { display: grid; grid-template-columns: 248px 1fr; min-height: 100%; }
+
+/* Sidebar — mirrors Shepherd's nav */
+.nav { background: var(--nav-bg); border-right: 1px solid var(--border); padding: 28px 16px 20px; display: flex; flex-direction: column; gap: 4px; }
+.nav__brand { display: flex; align-items: center; gap: 10px; padding: 0 4px 20px; margin-bottom: 8px; border-bottom: 1px solid var(--border); }
+.nav__brand-mark { width: 38px; height: 38px; border-radius: 9px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; }
+.nav__brand-mark svg.lucide { width: 20px; height: 20px; }
+.nav__brand-name { font-family: var(--font-head); font-size: 19px; line-height: 1.1; }
+.nav__brand-kind { font-size: 12px; color: var(--muted); }
+.nav__label { padding: 16px 10px 6px; color: var(--faint); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+.nav__item { display: flex; align-items: center; gap: 14px; padding: 8px 10px; border-radius: 6px; color: var(--muted); font-size: 14px; font-weight: 500; border: 0; background: transparent; width: 100%; text-align: left; cursor: pointer; }
+.nav__item span.grow { flex: 1; }
+.nav__item:hover { background: var(--bg); color: var(--text); }
+.nav__item--active, .nav__item--active:hover { background: var(--accent-soft); color: var(--link); font-weight: 600; }
+.nav__count { font-size: 11px; font-weight: 700; background: var(--info-icon); color: #fff; border-radius: 999px; padding: 1px 7px; }
+.nav__spacer { flex: 1; }
+.nav__account { display: flex; align-items: center; gap: 10px; padding: 12px 8px 0; border-top: 1px solid var(--border); margin-top: 12px; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--link); display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.nav__account small { display: block; color: var(--muted); font-size: 12px; }
+
+.main { padding-block: 32px 64px; padding-inline: 40px; min-width: 0; }
+.mock-note { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+.mock-note b { color: var(--text); font-weight: 600; }
+
+/* Page chrome */
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.page-head h1 { margin: 0 0 6px; font-size: 30px; font-weight: 800; letter-spacing: -.01em; text-wrap: balance; }
+.page-head p { margin: 0; color: var(--muted); }
+.date { color: var(--muted); padding-top: 8px; white-space: nowrap; }
+.back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); background: none; border: 0; padding: 0; cursor: pointer; font-size: 13px; margin-bottom: 14px; }
+.back:hover { color: var(--text); }
+.section { margin-top: 32px; }
+.section h2 { margin: 0 0 12px; font-size: 16px; font-weight: 700; }
+.section-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.section-row h2 { margin: 0; }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; font-size: 13px; font-weight: 600; padding: 8px 14px; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--text); white-space: nowrap; }
+.btn:hover { background: var(--row-hover); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--primary:hover { background: var(--accent-hover); }
+.btn--ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn svg.lucide { width: 15px; height: 15px; }
+
+.grid-actions { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.qa { display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); text-align: left; cursor: pointer; }
+.qa:hover { border-color: var(--accent-icon); }
+.icon-tile { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-icon); flex-shrink: 0; }
+.icon-tile svg.lucide { width: 18px; height: 18px; }
+.qa strong { display: block; font-size: 14px; font-weight: 600; }
+.qa span.sub { color: var(--muted); font-size: 13px; }
+
+.grid-stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.stat { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; }
+.stat .icon-tile { width: 48px; height: 48px; }
+.stat .icon-tile svg.lucide { width: 22px; height: 22px; }
+.stat strong { display: block; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat > span:not(.icon-tile) span { display: block; font-size: 13px; }
+.stat em { font-style: normal; font-size: 12px; color: var(--muted); }
+
+.two-col { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; }
+
+.card { border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: var(--shadow); }
+.card-pad { padding: 18px 20px; }
+
+.activity { list-style: none; margin: 0; padding: 0; }
+.activity li { display: flex; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border-light); }
+.activity li:last-child { border-bottom: 0; }
+.activity .icon-tile { width: 32px; height: 32px; }
+.activity .icon-tile svg.lucide { width: 16px; height: 16px; }
+.activity p { margin: 0; font-size: 13px; }
+.activity small { color: var(--muted); font-size: 12px; }
+.icon-tile--ai { background: var(--ai-soft); color: var(--ai); }
+
+/* Pills */
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 10px; border: 1px solid transparent; white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill--quote { background: var(--tab-bg); color: var(--muted); border-color: var(--border); }
+.pill--active { background: var(--ok-soft); color: var(--ok-text); border-color: var(--ok-border); }
+.pill--waiting { background: var(--warn-soft); color: var(--warn-text); border-color: var(--warn-border); }
+.pill--punch { background: var(--info-soft); color: var(--info-text); border-color: var(--info-border); }
+.pill--done { background: var(--tab-bg); color: var(--faint); border-color: var(--border); }
+.tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; border-radius: 5px; padding: 2px 7px; background: var(--tab-bg); color: var(--muted); white-space: nowrap; }
+.tag svg.lucide { width: 12px; height: 12px; }
+.tag--new { background: var(--ai-soft); color: var(--ai); }
+.tag--mat { background: var(--warn-soft); color: var(--warn-text); }
+.tag--sched { background: var(--info-soft); color: var(--info-text); }
+.tag--money { background: var(--ok-soft); color: var(--ok-text); }
+
+/* Tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--nav-bg); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:hover td { background: var(--row-hover); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td .strong { font-weight: 600; }
+td .sub { display: block; color: var(--muted); font-size: 12px; }
+
+/* Inbox */
+.inbox { display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; min-height: 560px; }
+.mail-list { border-right: 1px solid var(--border); background: var(--bg); }
+.mail-item { display: block; width: 100%; text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--border-light); padding: 14px 16px; cursor: pointer; }
+.mail-item:hover { background: var(--row-hover); }
+.mail-item--sel { background: var(--accent-soft); }
+.mail-item--sel:hover { background: var(--accent-soft); }
+.mail-item__top { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.mail-item__from { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mail-item__time { color: var(--faint); font-size: 12px; white-space: nowrap; }
+.mail-item__subj { font-size: 13px; margin: 2px 0 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mail-item__tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.mail-item--filed .mail-item__from, .mail-item--filed .mail-item__subj { color: var(--muted); font-weight: 500; }
+.mail-view { padding: 22px 26px; min-width: 0; }
+.mail-view h2 { margin: 0 0 6px; font-size: 20px; font-weight: 700; text-wrap: balance; }
+.mail-meta { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+.mail-body { white-space: pre-wrap; font-size: 13.5px; line-height: 1.6; border-left: 3px solid var(--border); padding: 2px 0 2px 14px; color: var(--text); max-width: 68ch; }
+.extract { margin-top: 22px; border: 1px solid var(--ai-border); background: var(--ai-soft); border-radius: 10px; padding: 16px 18px; }
+.extract__head { display: flex; align-items: center; gap: 8px; color: var(--ai); font-weight: 700; font-size: 13px; margin-bottom: 12px; }
+.extract__head span.grow { flex: 1; }
+.extract dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 12px; font-size: 13px; }
+.extract dt { color: var(--muted); }
+.extract dd { margin: 0; font-weight: 500; }
+.extract h4 { margin: 14px 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.extract .table-wrap { background: var(--bg); }
+.extract__actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.filed-banner { display: flex; align-items: center; gap: 10px; margin-top: 22px; padding: 12px 14px; border: 1px solid var(--ok-border); background: var(--ok-soft); color: var(--ok-text); border-radius: 8px; font-size: 13px; }
+.filed-banner button { margin-left: auto; }
+
+/* Project detail */
+.proj-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--muted); font-size: 13px; margin-top: 10px; }
+.proj-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-top: 24px; overflow-x: auto; }
+.tab { border: 0; background: none; padding: 10px 14px; font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; display: inline-flex; gap: 8px; align-items: center; }
+.tab--active { color: var(--text); border-bottom-color: var(--accent-icon); font-weight: 600; }
+.tab .count { font-size: 11px; background: var(--tab-bg); color: var(--muted); border-radius: 999px; padding: 0 7px; }
+.tab-body { padding-top: 22px; }
+
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.kv > div { border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.kv small { display: block; color: var(--muted); font-size: 12px; margin-bottom: 2px; }
+.kv b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.progress { height: 6px; background: var(--tab-bg); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.progress i { display: block; height: 100%; background: var(--ok); border-radius: inherit; }
+
+.todo { list-style: none; margin: 0; padding: 0; }
+.todo li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-light); font-size: 13.5px; }
+.todo li:last-child { border-bottom: 0; }
+.todo input { width: 16px; height: 16px; accent-color: var(--accent); }
+.todo li.done span { color: var(--faint); text-decoration: line-through; }
+
+.status-btn { cursor: pointer; border: 0; padding: 0; background: none; }
+.mat-status { font-size: 12px; font-weight: 600; border-radius: 6px; padding: 3px 9px; border: 1px solid; white-space: nowrap; display: inline-flex; gap: 5px; align-items: center; }
+.mat-status--needed { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-border); }
+.mat-status--ordered { color: var(--warn-text); background: var(--warn-soft); border-color: var(--warn-border); }
+.mat-status--onsite { color: var(--ok-text); background: var(--ok-soft); border-color: var(--ok-border); }
+.mat-status svg.lucide { width: 12px; height: 12px; }
+
+.notes { display: flex; flex-direction: column; gap: 12px; }
+.note { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.note__head { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin-bottom: 6px; flex-wrap: wrap; }
+.note__head b { color: var(--text); font-weight: 600; font-size: 13px; }
+.note p { margin: 0; font-size: 13.5px; max-width: 70ch; white-space: pre-wrap; }
+.composer { border: 1px solid var(--border); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.composer textarea { width: 100%; min-height: 70px; resize: vertical; border: 0; background: transparent; outline: none; }
+.composer__row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.composer select { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; background: var(--bg); font-size: 13px; }
+
+.callout { display: flex; align-items: flex-start; gap: 10px; background: var(--info-soft); border: 1px solid var(--info-border); border-radius: 8px; padding: 12px 14px; color: var(--info-text); font-size: 12.5px; line-height: 1.5; }
+.callout svg.lucide { color: var(--info-icon); margin-top: 1px; }
+
+.supplier { margin-bottom: 18px; }
+.supplier h3 { font-size: 14px; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+.supplier h3 small { color: var(--muted); font-weight: 500; font-size: 12px; }
+
+.toast { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; display: flex; gap: 8px; align-items: center; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.empty { color: var(--muted); padding: 40px 20px; text-align: center; }
+
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--border); background: var(--bg); border-radius: 999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500; cursor: pointer; color: var(--muted); }
+.chip--on { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--link); font-weight: 600; }
+
+@media (max-width: 980px) {
+  .two-col { grid-template-columns: 1fr; }
+  .inbox { grid-template-columns: 1fr; }
+  .mail-list { border-right: 0; border-bottom: 1px solid var(--border); max-height: 320px; overflow-y: auto; }
+}
+@media (max-width: 800px) {
+  .app { grid-template-columns: 1fr; }
+  .nav { flex-direction: row; align-items: center; padding: 10px 16px; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; gap: 2px; }
+  .nav__brand { border: 0; padding: 0 10px 0 0; margin: 0; }
+  .nav__brand-text, .nav__label, .nav__spacer, .nav__account { display: none; }
+  .nav__item { width: auto; white-space: nowrap; gap: 8px; padding: 7px 10px; }
+  .main { padding-inline: 16px; padding-block: 20px 48px; }
+  .page-head h1 { font-size: 24px; }
+  .mail-view { padding: 18px 16px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .toast { animation: rise .2s ease-out; }
+  @keyframes rise { from { transform: translateY(8px); opacity: 0; } }
+}
+</style>
+
+<div class="app">
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+  <main class="main" id="main"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+const TODAY = 'Monday, September 28, 2026';
+
+const state = {
+  view: 'dashboard',
+  projectId: null,
+  tab: 'overview',
+  emailId: 'e1',
+  projFilter: 'all',
+  user: 'Pawel',
+  activity: [
+    { icon: 'sparkles', ai: true, text: '<b>Claude</b> pulled 6 materials from <b>Ridgeline Lumber</b>’s quote into <b>Deck rebuild, 7 Orchard Ln</b>', when: '2 hours ago' },
+    { icon: 'calendar-check', ai: true, text: '<b>Claude</b> moved the <b>Deck rebuild</b> start to Oct 5 after Dan Moreau’s reply', when: '3 hours ago' },
+    { icon: 'notebook-pen', text: '<b>Marta</b> added a note to <b>Basement finish, 55 Crestview Dr</b>', when: 'Yesterday' },
+    { icon: 'truck', text: '<b>Pawel</b> marked <b>Drywall 1/2" 4x8</b> as on site', when: 'Yesterday' },
+    { icon: 'folder-plus', ai: true, text: '<b>Claude</b> opened project <b>Bathroom refresh, 230 Bay St</b> from an email', when: '3 days ago' },
+  ],
+  projects: [
+    {
+      id: 'p1', name: 'Deck rebuild', address: '7 Orchard Ln', client: 'Dan Moreau', clientEmail: 'dmoreau@mail.com',
+      status: 'waiting', start: 'Oct 5', budget: 14200, progress: 10,
+      scope: 'Tear out the rotted 14×16 deck. Rebuild with pressure-treated framing, composite boards, aluminum rail and new stairs to grade.',
+      todos: [
+        { t: 'Pull deck permit from the township', done: true },
+        { t: 'Call in Dig Safe before post holes', done: false },
+        { t: 'Confirm rail color with Dan (black or bronze)', done: false },
+        { t: 'Rent dumpster for tear-out', done: false },
+      ],
+      materials: [
+        { item: 'PT 2×10×16 joists', qty: 14, unit: 'pcs', supplier: 'Ridgeline Lumber', cost: 588, status: 'ordered' },
+        { item: 'PT 6×6×10 posts', qty: 6, unit: 'pcs', supplier: 'Ridgeline Lumber', cost: 312, status: 'ordered' },
+        { item: 'Composite decking 16 ft, slate gray', qty: 62, unit: 'boards', supplier: 'Ridgeline Lumber', cost: 4030, status: 'needed' },
+        { item: 'Hidden fastener clips', qty: 6, unit: 'boxes', supplier: 'Ridgeline Lumber', cost: 342, status: 'needed' },
+        { item: 'Aluminum rail kit, 6 ft', qty: 9, unit: 'kits', supplier: 'Ridgeline Lumber', cost: 1620, status: 'needed' },
+        { item: 'Joist hangers + structural screws', qty: 1, unit: 'lot', supplier: 'Ridgeline Lumber', cost: 265, status: 'onsite' },
+        { item: 'Concrete mix 80 lb', qty: 18, unit: 'bags', supplier: 'Keller Supply', cost: 126, status: 'onsite' },
+      ],
+      notes: [
+        { who: 'Claude', ai: true, when: 'Today, 9:12 AM', text: 'From Dan’s reply: start date moved from Sep 30 to Oct 5. He wants the stairs on the left side facing the yard, not centered.', src: 'Re: Deck – start date' },
+        { who: 'Pawel', when: 'Sep 24', text: 'Ledger board is fine on the house side. Flashing needs replacing. Add 1 roll of joist tape.' },
+      ],
+      emails: ['e3', 'e2'],
+    },
+    {
+      id: 'p2', name: 'Basement finish', address: '55 Crestview Dr', client: 'Priya & Tom Shah', clientEmail: 'priya.shah@mail.com',
+      status: 'active', start: 'Sep 8', budget: 41500, progress: 55,
+      scope: 'Frame and finish 820 sq ft basement: family room, full bath, storage. Egress window by others.',
+      todos: [
+        { t: 'Framing inspection', done: true },
+        { t: 'Rough plumbing inspection for bath', done: true },
+        { t: 'Insulation inspection, booked Wed 8 AM', done: false },
+        { t: 'Priya to pick tile by Oct 2', done: false },
+      ],
+      materials: [
+        { item: 'Drywall 1/2" 4×8', qty: 64, unit: 'sheets', supplier: 'Keller Supply', cost: 1024, status: 'onsite' },
+        { item: 'Mold-resistant drywall 1/2" 4×8 (bath)', qty: 12, unit: 'sheets', supplier: 'Keller Supply', cost: 264, status: 'onsite' },
+        { item: 'Rockwool R-15 batts', qty: 22, unit: 'bags', supplier: 'Keller Supply', cost: 1210, status: 'ordered' },
+        { item: 'LVP flooring, oak natural', qty: 860, unit: 'sq ft', supplier: 'Floor Depot', cost: 3010, status: 'needed' },
+        { item: 'Recessed LED 6"', qty: 18, unit: 'pcs', supplier: 'Keller Supply', cost: 432, status: 'ordered' },
+      ],
+      notes: [
+        { who: 'Marta', when: 'Yesterday', text: 'Tom asked if we can add an outlet behind the TV wall. Quoted $180. He said yes, add it to the change order.' },
+        { who: 'Pawel', when: 'Sep 21', text: 'Found a small leak at the old utility sink trap. Fixed it, no charge.' },
+      ],
+      emails: [],
+    },
+    {
+      id: 'p3', name: 'Bathroom refresh', address: '230 Bay St', client: 'Helen Ortiz', clientEmail: 'h.ortiz@mail.com',
+      status: 'quote', start: 'Nov 2', budget: 9800, progress: 0,
+      scope: 'Replace vanity, toilet and fixtures. Regrout the shower. Paint.',
+      todos: [{ t: 'Send written quote', done: false }, { t: 'Confirm vanity width (36" or 42")', done: false }],
+      materials: [
+        { item: 'Vanity 36" w/ top', qty: 1, unit: 'pc', supplier: 'Floor Depot', cost: 780, status: 'needed' },
+        { item: 'Toilet, comfort height', qty: 1, unit: 'pc', supplier: 'Keller Supply', cost: 310, status: 'needed' },
+      ],
+      notes: [{ who: 'Claude', ai: true, when: 'Sep 25', text: 'Project opened from Helen’s email “Bathroom estimate?”. She has a 2014 house, one bathroom, wants it done before Thanksgiving.', src: 'Bathroom estimate?' }],
+      emails: [],
+    },
+    {
+      id: 'p4', name: 'Front porch repair', address: '19 Mill Rd', client: 'George Albers', clientEmail: 'galbers@mail.com',
+      status: 'punch', start: 'Aug 18', budget: 6300, progress: 92,
+      scope: 'Replace porch floor boards and two columns. Scrape and paint.',
+      todos: [{ t: 'Touch-up paint on left column', done: false }, { t: 'Final walkthrough with George', done: false }],
+      materials: [{ item: 'Fir porch flooring 1×4', qty: 180, unit: 'lin ft', supplier: 'Ridgeline Lumber', cost: 720, status: 'onsite' }],
+      notes: [], emails: [],
+    },
+    {
+      id: 'p5', name: 'Garage shelving', address: '4 Pine Ct', client: 'Lisa Grant', clientEmail: 'lgrant@mail.com',
+      status: 'done', start: 'Jul 30', budget: 2100, progress: 100,
+      scope: 'Built-in shelving along back wall.', todos: [], materials: [], notes: [], emails: [],
+    },
+  ],
+  emails: [
+    {
+      id: 'e1', from: 'Karen Whitfield', addr: 'karen.whitfield@mail.com', time: '8:41 AM', subject: 'Kitchen remodel – 18 Linden St',
+      tags: [['new', 'folder-plus', 'New project'], ['mat', 'package', 'Materials']], status: 'new',
+      body: `Hi Pawel,
+
+Our neighbors the Shahs gave us your name. We'd like to redo our kitchen at 18 Linden St.
+
+What we're thinking:
+- Take out the old oak cabinets (about 22 linear feet) and put in white shaker cabinets
+- Quartz countertops, roughly 42 sq ft, with an undermount sink
+- Subway tile backsplash, maybe 30 sq ft
+- Move the fridge to the other wall, so we'll need a new outlet there
+- 6 new recessed lights
+
+We'd love to start around October 19. Budget is around $38,000, but we're flexible for the right job.
+
+Could you come by this week to take a look? Thursday afternoon works.
+
+Thanks,
+Karen`,
+      extract: {
+        kind: 'new',
+        fields: [['Client', 'Karen Whitfield'], ['Address', '18 Linden St'], ['Job', 'Kitchen remodel'], ['Target start', 'Oct 19'], ['Budget', '$38,000 (flexible)'], ['Site visit', 'Thursday afternoon (Oct 1)']],
+        materials: [
+          { item: 'White shaker cabinets', qty: 22, unit: 'lin ft', supplier: '', cost: 0, status: 'needed' },
+          { item: 'Quartz countertop', qty: 42, unit: 'sq ft', supplier: '', cost: 0, status: 'needed' },
+          { item: 'Undermount sink', qty: 1, unit: 'pc', supplier: '', cost: 0, status: 'needed' },
+          { item: 'Subway tile, 3×6', qty: 30, unit: 'sq ft', supplier: '', cost: 0, status: 'needed' },
+          { item: 'Recessed LED 6"', qty: 6, unit: 'pcs', supplier: '', cost: 0, status: 'needed' },
+          { item: '20A outlet + circuit for fridge', qty: 1, unit: 'lot', supplier: '', cost: 0, status: 'needed' },
+        ],
+        todos: ['Site visit Thursday afternoon', 'Send estimate after site visit', 'Check if fridge wall needs a new circuit'],
+      },
+    },
+    {
+      id: 'e2', from: 'Ridgeline Lumber', addr: 'quotes@ridgelinelumber.com', time: '7:05 AM', subject: 'Quote #44718 – Moreau deck',
+      tags: [['mat', 'package', 'Materials']], status: 'filed', project: 'p1',
+      body: `Pawel,
+
+Attached is quote #44718 for the Moreau deck.
+
+14 – PT 2x10x16          $588.00
+6 – PT 6x6x10            $312.00
+62 – Composite 16' slate $4,030.00
+6 – Hidden clips (box)   $342.00
+9 – Alum rail kit 6'     $1,620.00
+
+Composite and rail are 5–7 business days out. Framing lumber can go on Thursday's truck.
+
+Mike – Ridgeline Lumber`,
+      extract: { kind: 'update', project: 'p1', fields: [['Project', 'Deck rebuild, 7 Orchard Ln'], ['Quote', '#44718, $6,892'], ['Lead time', 'Composite and rail 5–7 days; framing Thursday']], materials: [], todos: [] },
+    },
+    {
+      id: 'e3', from: 'Dan Moreau', addr: 'dmoreau@mail.com', time: 'Sun', subject: 'Re: Deck – start date',
+      tags: [['sched', 'calendar', 'Schedule']], status: 'filed', project: 'p1',
+      body: `Hey Pawel,
+
+Sep 30 won't work, we have family in town. Oct 5 works for me.
+
+Also, can the stairs go on the left side facing the yard instead of the middle?
+
+Dan`,
+      extract: { kind: 'update', project: 'p1', fields: [['Project', 'Deck rebuild, 7 Orchard Ln'], ['Start date', 'Sep 30 → Oct 5'], ['Change', 'Stairs on the left side, facing the yard']], materials: [], todos: [] },
+    },
+    {
+      id: 'e4', from: 'Priya Shah', addr: 'priya.shah@mail.com', time: 'Sat', subject: 'Tile for the basement bath',
+      tags: [['mat', 'package', 'Materials']], status: 'new', project: 'p2',
+      body: `Hi Pawel,
+
+We picked the tile! Floor is the 12x24 matte gray, about 60 sq ft. Shower walls are the white 4x12, around 95 sq ft. Tom wants a niche in the shower if that's possible.
+
+Priya`,
+      extract: {
+        kind: 'update', project: 'p2',
+        fields: [['Project', 'Basement finish, 55 Crestview Dr'], ['Decision', 'Tile picked (was due Oct 2)'], ['Change', 'Add a shower niche']],
+        materials: [
+          { item: 'Floor tile 12×24, matte gray', qty: 60, unit: 'sq ft', supplier: '', cost: 0, status: 'needed' },
+          { item: 'Wall tile 4×12, white', qty: 95, unit: 'sq ft', supplier: '', cost: 0, status: 'needed' },
+          { item: 'Shower niche kit', qty: 1, unit: 'pc', supplier: '', cost: 0, status: 'needed' },
+        ],
+        todos: ['Price the shower niche for a change order'],
+        closeTodo: 'Priya to pick tile by Oct 2',
+      },
+    },
+    {
+      id: 'e5', from: 'George Albers', addr: 'galbers@mail.com', time: 'Fri', subject: 'Payment sent',
+      tags: [['money', 'dollar-sign', 'Payment']], status: 'new', project: 'p4',
+      body: `Pawel, I sent the second payment of $3,150 by check today. Porch looks great. Let me know when you want to do the walkthrough.
+
+George`,
+      extract: { kind: 'update', project: 'p4', fields: [['Project', 'Front porch repair, 19 Mill Rd'], ['Payment', '$3,150 check (2nd of 2)'], ['Next step', 'Schedule final walkthrough']], materials: [], todos: [] },
+    },
+  ],
+  generalNotes: [
+    { who: 'Pawel', when: 'Today, 7:30 AM', text: 'Truck needs inspection sticker by Oct 31.' },
+    { who: 'Marta', when: 'Sep 25', text: 'Insurance certificate renewal came in. Filed under Documents. Send updated COI to Ridgeline and Keller.' },
+    { who: 'Pawel', when: 'Sep 22', text: 'Look into renting a mini excavator for the Moreau footings vs. hand digging.' },
+  ],
+  users: [
+    { name: 'Pawel', email: 'pawel@example.com', role: 'Primary Admin', last: 'Active now' },
+    { name: 'Marta', email: 'office@example.com', role: 'Admin', last: 'Yesterday' },
+    { name: 'Luis', email: 'luis.crew@example.com', role: 'Crew (view projects, add notes)', last: 'Sep 24' },
+  ],
+};
+
+const STATUS = {
+  quote: ['Quoting', 'pill--quote'], active: ['In progress', 'pill--active'], waiting: ['Waiting on materials', 'pill--waiting'],
+  punch: ['Punch list', 'pill--punch'], done: ['Complete', 'pill--done'],
+};
+const MAT = { needed: ['Needed', 'mat-status--needed', 'circle-alert'], ordered: ['Ordered', 'mat-status--ordered', 'clock'], onsite: ['On site', 'mat-status--onsite', 'circle-check'] };
+const MAT_NEXT = { needed: 'ordered', ordered: 'onsite', onsite: 'needed' };
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const money = (n) => '$' + n.toLocaleString('en-US');
+const ic = (n) => `<i data-lucide="${n}"></i>`;
+const proj = (id) => state.projects.find((p) => p.id === id);
+const email = (id) => state.emails.find((e) => e.id === id);
+const pill = (s) => `<span class="pill ${STATUS[s][1]}">${STATUS[s][0]}</span>`;
+const newEmails = () => state.emails.filter((e) => e.status === 'new').length;
+const allMaterials = () => state.projects.filter((p) => p.status !== 'done').flatMap((p) => p.materials.map((m, i) => ({ ...m, p, i })));
+
+function toast(msg) {
+  const t = $('#toast');
+  t.innerHTML = ic('circle-check') + esc(msg);
+  t.hidden = false;
+  icons();
+  clearTimeout(toast.h);
+  toast.h = setTimeout(() => (t.hidden = true), 2600);
+}
+function icons() { try { lucide.createIcons({ icons: lucide.icons }); } catch (e) {} }
+function go(view, extra = {}) { Object.assign(state, { view }, extra); render(); window.scrollTo(0, 0); }
+
+function renderNav() {
+  const item = (v, icon, label, extra = '') =>
+    `<button class="nav__item ${state.view === v || (v === 'projects' && state.view === 'project') ? 'nav__item--active' : ''}" data-go="${v}">${ic(icon)}<span class="grow">${label}</span>${extra}</button>`;
+  const n = newEmails();
+  $('#nav').innerHTML = `
+    <div class="nav__brand">
+      <span class="nav__brand-mark">${ic('hard-hat')}</span>
+      <span class="nav__brand-text"><div class="nav__brand-name">Pawel</div><div class="nav__brand-kind">Contracting · Job Desk</div></span>
+    </div>
+    ${item('dashboard', 'house', 'Dashboard')}
+    <div class="nav__label">Work</div>
+    ${item('inbox', 'inbox', 'From Email', n ? `<span class="nav__count">${n}</span>` : '')}
+    ${item('projects', 'folder-kanban', 'Projects')}
+    ${item('materials', 'package', 'Materials')}
+    ${item('notes', 'notebook-pen', 'Notes')}
+    <div class="nav__label">Manage</div>
+    ${item('users', 'users', 'Users')}
+    <div class="nav__spacer"></div>
+    <div class="nav__account"><span class="avatar">${state.user[0]}</span><span><b>${state.user}</b><small>Primary Admin</small></span></div>`;
+}
+
+function viewDashboard() {
+  const active = state.projects.filter((p) => ['active', 'waiting', 'punch'].includes(p.status)).length;
+  const needed = allMaterials().filter((m) => m.status === 'needed');
+  const pipeline = state.projects.filter((p) => p.status !== 'done').reduce((s, p) => s + p.budget, 0);
+  return `
+    <div class="page-head">
+      <div><h1>Welcome back, ${state.user}</h1><p>Here’s what’s happening on your jobs.</p></div>
+      <span class="date">${TODAY}</span>
+    </div>
+    <section class="section">
+      <h2>Quick Actions</h2>
+      <div class="grid-actions">
+        <button class="qa" data-go="inbox"><span class="icon-tile icon-tile--ai">${ic('sparkles')}</span><span><strong>Review New Emails</strong><span class="sub">${newEmails()} emails sorted and ready to file.</span></span></button>
+        <button class="qa" data-go="materials"><span class="icon-tile">${ic('clipboard-list')}</span><span><strong>Materials to Order</strong><span class="sub">${needed.length} items across all jobs.</span></span></button>
+        <button class="qa" data-go="notes"><span class="icon-tile">${ic('notebook-pen')}</span><span><strong>Add a Note</strong><span class="sub">Jot down anything, on a job or not.</span></span></button>
+      </div>
+    </section>
+    <section class="section">
+      <h2>Overview</h2>
+      <div class="grid-stats">
+        <div class="stat"><span class="icon-tile">${ic('hard-hat')}</span><span><strong>${active}</strong><span>Jobs</span><em>In progress</em></span></div>
+        <div class="stat"><span class="icon-tile">${ic('file-pen-line')}</span><span><strong>${state.projects.filter((p) => p.status === 'quote').length}</strong><span>Quotes</span><em>Waiting to send</em></span></div>
+        <div class="stat"><span class="icon-tile">${ic('package')}</span><span><strong>${needed.length}</strong><span>Materials</span><em>Not ordered yet</em></span></div>
+        <div class="stat"><span class="icon-tile">${ic('dollar-sign')}</span><span><strong>${money(pipeline)}</strong><span>Open work</span><em>Total job value</em></span></div>
+      </div>
+    </section>
+    <div class="two-col section">
+      <section>
+        <div class="section-row"><h2>Active Jobs</h2><button class="btn btn--ghost" data-go="projects">View all ${ic('chevron-right')}</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Job</th><th>Status</th><th class="num">Progress</th></tr></thead>
+          <tbody>${state.projects.filter((p) => p.status !== 'done').map((p) => `
+            <tr class="clickable" data-proj="${p.id}"><td><span class="strong">${esc(p.name)}</span><span class="sub">${esc(p.address)} · ${esc(p.client)}</span></td><td>${pill(p.status)}</td><td class="num">${p.progress}%</td></tr>`).join('')}
+          </tbody></table></div>
+      </section>
+      <section>
+        <h2>Recent Activity</h2>
+        <div class="card"><ul class="activity">${state.activity.slice(0, 6).map((a) => `
+          <li><span class="icon-tile ${a.ai ? 'icon-tile--ai' : ''}">${ic(a.icon)}</span><span><p>${a.text}</p><small>${a.when}</small></span></li>`).join('')}
+        </ul></div>
+      </section>
+    </div>`;
+}
+
+function extractBlock(e) {
+  const x = e.extract;
+  if (e.status === 'filed') {
+    const p = proj(e.project);
+    return `<div class="filed-banner">${ic('circle-check')}<span>Filed to <b>${esc(p.name)}, ${esc(p.address)}</b>.</span><button class="btn" data-proj="${p.id}">Open project</button></div>`;
+  }
+  const matTable = x.materials.length ? `
+    <h4>Materials found</h4>
+    <div class="table-wrap"><table><thead><tr><th>Item</th><th class="num">Qty</th><th>Unit</th></tr></thead>
+    <tbody>${x.materials.map((m) => `<tr><td>${esc(m.item)}</td><td class="num">${m.qty}</td><td>${esc(m.unit)}</td></tr>`).join('')}</tbody></table></div>` : '';
+  const todos = x.todos.length ? `<h4>To-dos</h4><ul class="todo">${x.todos.map((t) => `<li>${ic('square')}<span>${esc(t)}</span></li>`).join('')}</ul>` : '';
+  const actions = x.kind === 'new'
+    ? `<button class="btn btn--primary" data-act="create" data-email="${e.id}">${ic('folder-plus')}Create project</button><button class="btn" data-act="dismiss" data-email="${e.id}">Not a job</button>`
+    : `<button class="btn btn--primary" data-act="file" data-email="${e.id}">${ic('check')}Add to ${esc(proj(x.project).name)}</button><button class="btn" data-act="dismiss" data-email="${e.id}">Ignore</button>`;
+  return `
+    <div class="extract">
+      <div class="extract__head">${ic('sparkles')}<span class="grow">${x.kind === 'new' ? 'Looks like a new job. Here’s what Claude pulled out.' : 'Update for an existing job'}</span></div>
+      <dl>${x.fields.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+      ${matTable}${todos}
+      <div class="extract__actions">${actions}</div>
+    </div>`;
+}
+
+function viewInbox() {
+  const e = email(state.emailId) || state.emails[0];
+  return `
+    <div class="page-head"><div><h1>From Email</h1><p>Claude reads the inbox every 15 minutes and sorts job emails here. Nothing is filed until you approve it.</p></div></div>
+    <div class="section inbox">
+      <div class="mail-list">${state.emails.map((m) => `
+        <button class="mail-item ${m.id === e.id ? 'mail-item--sel' : ''} ${m.status !== 'new' ? 'mail-item--filed' : ''}" data-email-sel="${m.id}">
+          <div class="mail-item__top"><span class="mail-item__from">${esc(m.from)}</span><span class="mail-item__time">${m.time}</span></div>
+          <div class="mail-item__subj">${esc(m.subject)}</div>
+          <div class="mail-item__tags">${m.status !== 'new' ? `<span class="tag">${ic('check')}${m.status === 'filed' ? 'Filed' : 'Ignored'}</span>` : m.tags.map(([c, i, l]) => `<span class="tag tag--${c}">${ic(i)}${l}</span>`).join('')}</div>
+        </button>`).join('')}
+      </div>
+      <div class="mail-view">
+        <h2>${esc(e.subject)}</h2>
+        <div class="mail-meta">${esc(e.from)} &lt;${esc(e.addr)}&gt; · ${e.time}</div>
+        <div class="mail-body">${esc(e.body)}</div>
+        ${e.status === 'ignored' ? `<div class="filed-banner" style="background:var(--tab-bg);border-color:var(--border);color:var(--muted)">${ic('eye-off')}<span>Ignored. It stays in Gmail.</span></div>` : extractBlock(e)}
+      </div>
+    </div>`;
+}
+
+function viewProjects() {
+  const f = state.projFilter;
+  const list = state.projects.filter((p) => f === 'all' || (f === 'open' ? p.status !== 'done' : p.status === f));
+  const chip = (k, l) => `<button class="chip ${f === k ? 'chip--on' : ''}" data-filter="${k}">${l}</button>`;
+  return `
+    <div class="page-head"><div><h1>Projects</h1><p>Every job, whether it came from an email or you added it yourself.</p></div>
+      <button class="btn btn--primary" data-act="newproj">${ic('plus')}New project</button></div>
+    <div class="section">
+      <div class="filters" style="margin-bottom:12px">${chip('all', 'All')}${chip('open', 'Open')}${chip('quote', 'Quoting')}${chip('waiting', 'Waiting on materials')}${chip('punch', 'Punch list')}${chip('done', 'Complete')}</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Job</th><th>Client</th><th>Status</th><th>Start</th><th class="num">Materials needed</th><th class="num">Value</th></tr></thead>
+        <tbody>${list.map((p) => `
+          <tr class="clickable" data-proj="${p.id}">
+            <td><span class="strong">${esc(p.name)}</span><span class="sub">${esc(p.address)}</span></td>
+            <td>${esc(p.client)}</td><td>${pill(p.status)}</td><td>${p.start}</td>
+            <td class="num">${p.materials.filter((m) => m.status === 'needed').length || '–'}</td>
+            <td class="num">${money(p.budget)}</td>
+          </tr>`).join('') || `<tr><td colspan="6" class="empty">No projects in this view.</td></tr>`}
+        </tbody></table></div>
+    </div>`;
+}
+
+function matTable(p) {
+  if (!p.materials.length) return `<div class="empty">No materials yet. Add one below or forward a supplier quote to your inbox.</div>`;
+  const total = p.materials.reduce((s, m) => s + m.cost, 0);
+  return `
+    <div class="table-wrap"><table>
+      <thead><tr><th>Item</th><th class="num">Qty</th><th>Unit</th><th>Supplier</th><th class="num">Cost</th><th>Status</th></tr></thead>
+      <tbody>${p.materials.map((m, i) => `
+        <tr><td>${esc(m.item)}</td><td class="num">${m.qty}</td><td>${esc(m.unit)}</td><td>${esc(m.supplier) || '<span class="sub">Not set</span>'}</td>
+        <td class="num">${m.cost ? money(m.cost) : '–'}</td>
+        <td><button class="status-btn" data-mat="${p.id}:${i}" title="Click to change status"><span class="mat-status ${MAT[m.status][1]}">${ic(MAT[m.status][2])}${MAT[m.status][0]}</span></button></td></tr>`).join('')}
+      </tbody>
+      <tfoot><tr><td colspan="4" style="font-weight:600">Total</td><td class="num" style="font-weight:600">${money(total)}</td><td></td></tr></tfoot>
+    </table></div>`;
+}
+
+function noteList(notes) {
+  return notes.map((n) => `
+    <div class="note">
+      <div class="note__head"><span class="avatar" style="width:24px;height:24px;font-size:11px;${n.ai ? 'background:var(--ai-soft);color:var(--ai)' : ''}">${n.ai ? ic('sparkles') : n.who[0]}</span><b>${esc(n.who)}</b><span>${n.when}</span>${n.src ? `<span class="tag tag--new">${ic('mail')}From “${esc(n.src)}”</span>` : ''}${n.proj ? `<span class="tag">${ic('folder')}${esc(n.proj)}</span>` : ''}</div>
+      <p>${esc(n.text)}</p>
+    </div>`).join('') || '<div class="empty">No notes yet.</div>';
+}
+
+function composer(target) {
+  return `
+    <form class="composer" data-note="${target}">
+      <label for="note-${target}" class="sub" style="font-size:12px;color:var(--muted)">New note</label>
+      <textarea id="note-${target}" placeholder="What happened on site, what the client asked for, what to remember…"></textarea>
+      <div class="composer__row">
+        <select id="note-who-${target}" aria-label="Posting as"><option>Pawel</option><option>Marta</option><option>Luis</option></select>
+        <button class="btn btn--primary" type="submit">${ic('send')}Add note</button>
+      </div>
+    </form>`;
+}
+
+function viewProject() {
+  const p = proj(state.projectId);
+  const t = state.tab;
+  const tab = (k, l, c) => `<button class="tab ${t === k ? 'tab--active' : ''}" data-tab="${k}">${l}${c !== undefined ? `<span class="count">${c}</span>` : ''}</button>`;
+  const spent = p.materials.reduce((s, m) => s + m.cost, 0);
+  let body = '';
+  if (t === 'overview') {
+    body = `
+      <div class="kv">
+        <div><small>Status</small>${pill(p.status)}</div>
+        <div><small>Start</small><b>${p.start}</b></div>
+        <div><small>Job value</small><b>${money(p.budget)}</b></div>
+        <div><small>Materials so far</small><b>${money(spent)}</b></div>
+        <div><small>Progress</small><b>${p.progress}%</b><div class="progress"><i style="width:${p.progress}%"></i></div></div>
+      </div>
+      <div class="two-col section">
+        <section><h2>Scope</h2><p style="margin:0;max-width:65ch">${esc(p.scope)}</p>
+          <h2 style="margin-top:24px">Client</h2><p style="margin:0">${esc(p.client)}<br><span class="sub" style="color:var(--muted)">${esc(p.clientEmail)}</span></p></section>
+        <section><h2>To-do</h2><ul class="todo">${p.todos.map((d, i) => `<li class="${d.done ? 'done' : ''}"><input type="checkbox" id="todo-${p.id}-${i}" data-todo="${p.id}:${i}" ${d.done ? 'checked' : ''}><label for="todo-${p.id}-${i}"><span>${esc(d.t)}</span></label></li>`).join('') || '<li><span class="sub">Nothing on the list.</span></li>'}</ul></section>
+      </div>`;
+  } else if (t === 'materials') {
+    body = `<div class="callout" style="margin-bottom:14px">${ic('info')}<span>Click a status to move it along: Needed → Ordered → On site. Supplier quotes you forward are added here automatically.</span></div>${matTable(p)}`;
+  } else if (t === 'notes') {
+    body = `<div class="notes">${composer(p.id)}${noteList(p.notes)}</div>`;
+  } else {
+    const ems = state.emails.filter((e) => e.project === p.id && e.status === 'filed');
+    body = ems.length ? `<div class="table-wrap"><table><thead><tr><th>From</th><th>Subject</th><th>Received</th></tr></thead><tbody>${ems.map((e) => `<tr class="clickable" data-email-open="${e.id}"><td class="strong">${esc(e.from)}</td><td>${esc(e.subject)}</td><td>${e.time}</td></tr>`).join('')}</tbody></table></div>` : '<div class="empty">No emails filed to this project yet.</div>';
+  }
+  return `
+    <button class="back" data-go="projects">${ic('arrow-left')}All projects</button>
+    <div class="page-head"><div><h1>${esc(p.name)}</h1>
+      <div class="proj-meta"><span>${ic('map-pin')}${esc(p.address)}</span><span>${ic('user')}${esc(p.client)}</span><span>${ic('calendar')}Starts ${p.start}</span></div></div>
+      <div>${pill(p.status)}</div></div>
+    <div class="tabs">${tab('overview', 'Overview')}${tab('materials', 'Materials', p.materials.length)}${tab('notes', 'Notes', p.notes.length)}${tab('emails', 'Emails', state.emails.filter((e) => e.project === p.id && e.status === 'filed').length)}</div>
+    <div class="tab-body">${body}</div>`;
+}
+
+function viewMaterials() {
+  const open = allMaterials().filter((m) => m.status !== 'onsite');
+  const bySup = {};
+  open.forEach((m) => (bySup[m.supplier || 'No supplier yet'] ||= []).push(m));
+  return `
+    <div class="page-head"><div><h1>Materials</h1><p>Everything not on site yet, across every open job, grouped by supplier so you can order in one call.</p></div></div>
+    <div class="section">${Object.entries(bySup).map(([s, items]) => `
+      <div class="supplier">
+        <h3>${ic('truck')}${esc(s)} <small>${items.length} items${items.some((m) => m.cost) ? ' · ' + money(items.reduce((a, m) => a + m.cost, 0)) : ''}</small></h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Item</th><th class="num">Qty</th><th>Unit</th><th>Job</th><th>Status</th></tr></thead>
+          <tbody>${items.map((m) => `
+            <tr><td>${esc(m.item)}</td><td class="num">${m.qty}</td><td>${esc(m.unit)}</td>
+            <td><button class="btn btn--ghost" style="padding:0;color:var(--link)" data-proj="${m.p.id}" data-tabto="materials">${esc(m.p.name)}</button></td>
+            <td><button class="status-btn" data-mat="${m.p.id}:${m.i}"><span class="mat-status ${MAT[m.status][1]}">${ic(MAT[m.status][2])}${MAT[m.status][0]}</span></button></td></tr>`).join('')}
+          </tbody></table></div>
+      </div>`).join('') || '<div class="empty">Everything is on site.</div>'}
+    </div>`;
+}
+
+function viewNotes() {
+  const all = [
+    ...state.generalNotes,
+    ...state.projects.flatMap((p) => p.notes.map((n) => ({ ...n, proj: p.name }))),
+  ];
+  return `
+    <div class="page-head"><div><h1>Notes</h1><p>General notes plus everything written on a job, newest first. Anyone logged in can add one.</p></div></div>
+    <div class="section notes">${composer('general')}${noteList(all)}</div>`;
+}
+
+function viewUsers() {
+  return `
+    <div class="page-head"><div><h1>Users</h1><p>Who can log in. Admins see everything; crew can view jobs and add notes.</p></div>
+      <button class="btn btn--primary" data-act="invite">${ic('user-plus')}Add user</button></div>
+    <div class="section table-wrap"><table>
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Last active</th></tr></thead>
+      <tbody>${state.users.map((u) => `<tr><td><span style="display:flex;align-items:center;gap:10px"><span class="avatar">${u.name[0]}</span><span class="strong">${esc(u.name)}</span></span></td><td>${esc(u.email)}</td><td>${esc(u.role)}</td><td>${u.last}</td></tr>`).join('')}</tbody>
+    </table></div>
+    <div class="section callout">${ic('info')}<span>Invite by email, they set a password, and the primary admin can change roles or turn access off at any time.</span></div>`;
+}
+
+function render() {
+  renderNav();
+  const views = { dashboard: viewDashboard, inbox: viewInbox, projects: viewProjects, project: viewProject, materials: viewMaterials, notes: viewNotes, users: viewUsers };
+  $('#main').innerHTML = `<div class="mock-note">${ic('flask-conical')}<span><b>Mockup</b> · sample jobs and emails. Click around; changes last until you reload.</span></div>` + views[state.view]();
+  icons();
+}
+
+document.addEventListener('click', (ev) => {
+  const el = ev.target.closest('[data-go],[data-proj],[data-tab],[data-email-sel],[data-email-open],[data-act],[data-mat],[data-filter]');
+  if (!el) return;
+  const d = el.dataset;
+  if (d.mat) {
+    const [pid, i] = d.mat.split(':');
+    const m = proj(pid).materials[+i];
+    m.status = MAT_NEXT[m.status];
+    state.activity.unshift({ icon: 'truck', text: `<b>${state.user}</b> marked <b>${esc(m.item)}</b> as ${MAT[m.status][0].toLowerCase()}`, when: 'Just now' });
+    render();
+    return;
+  }
+  if (d.go) return go(d.go);
+  if (d.proj) return go('project', { projectId: d.proj, tab: d.tabto || 'overview' });
+  if (d.tab) { state.tab = d.tab; return render(); }
+  if (d.filter) { state.projFilter = d.filter; return render(); }
+  if (d.emailSel) { state.emailId = d.emailSel; return render(); }
+  if (d.emailOpen) return go('inbox', { emailId: d.emailOpen });
+  if (d.act === 'create') {
+    const e = email(d.email);
+    const f = Object.fromEntries(e.extract.fields);
+    const id = 'p' + (state.projects.length + 1);
+    state.projects.unshift({
+      id, name: f['Job'], address: f['Address'], client: f['Client'], clientEmail: e.addr, status: 'quote', start: f['Target start'], budget: 38000, progress: 0,
+      scope: 'Remove existing oak cabinets and install white shaker cabinets, quartz countertops with undermount sink, subway tile backsplash, relocate fridge with new outlet, add 6 recessed lights.',
+      todos: e.extract.todos.map((t) => ({ t, done: false })),
+      materials: e.extract.materials.map((m) => ({ ...m })),
+      notes: [{ who: 'Claude', ai: true, when: 'Just now', text: 'Opened from Karen’s email. Referred by the Shahs (Basement finish, 55 Crestview Dr). Budget about $38k, flexible. Wants to start around Oct 19.', src: e.subject }],
+    });
+    e.status = 'filed'; e.project = id;
+    state.activity.unshift({ icon: 'folder-plus', ai: true, text: `<b>Claude</b> opened project <b>${esc(f['Job'])}, ${esc(f['Address'])}</b> from an email`, when: 'Just now' });
+    toast('Project created with 6 materials and 3 to-dos');
+    return go('project', { projectId: id, tab: 'overview' });
+  }
+  if (d.act === 'file') {
+    const e = email(d.email);
+    const p = proj(e.extract.project);
+    p.materials.push(...e.extract.materials.map((m) => ({ ...m })));
+    p.todos.push(...e.extract.todos.map((t) => ({ t, done: false })));
+    if (e.extract.closeTodo) p.todos.forEach((t) => { if (t.t === e.extract.closeTodo) t.done = true; });
+    p.notes.unshift({ who: 'Claude', ai: true, when: 'Just now', text: e.extract.fields.slice(1).map(([k, v]) => `${k}: ${v}`).join('\n'), src: e.subject });
+    e.status = 'filed';
+    state.activity.unshift({ icon: 'sparkles', ai: true, text: `<b>Claude</b> filed “${esc(e.subject)}” to <b>${esc(p.name)}</b>`, when: 'Just now' });
+    toast(`Added to ${p.name}`);
+    return render();
+  }
+  if (d.act === 'dismiss') { email(d.email).status = 'ignored'; return render(); }
+  if (d.act === 'newproj') return toast('In the real app this opens a blank project form');
+  if (d.act === 'invite') return toast('In the real app this sends an email invite');
+});
+
+document.addEventListener('change', (ev) => {
+  const d = ev.target.dataset;
+  if (d.todo) {
+    const [pid, i] = d.todo.split(':');
+    proj(pid).todos[+i].done = ev.target.checked;
+    render();
+  }
+});
+
+document.addEventListener('submit', (ev) => {
+  const form = ev.target.closest('[data-note]');
+  if (!form) return;
+  ev.preventDefault();
+  const target = form.dataset.note;
+  const text = form.querySelector('textarea').value.trim();
+  if (!text) return;
+  const who = form.querySelector('select').value;
+  const note = { who, when: 'Just now', text };
+  if (target === 'general') state.generalNotes.unshift(note);
+  else proj(target).notes.unshift(note);
+  state.activity.unshift({ icon: 'notebook-pen', text: `<b>${who}</b> added a note${target === 'general' ? '' : ` to <b>${esc(proj(target).name)}</b>`}`, when: 'Just now' });
+  toast('Note added');
+  render();
+});
+
+render();
+</script>
+
+</body></html>
